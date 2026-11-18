@@ -1,5 +1,7 @@
-// CUMA DRIFT — Platanus Hack 26 Arcade
+// CHORO DRIFT — Platanus Hack 26 Arcade
 // Drift nocturno de Maipú al cerro. Todo generado por código.
+// Wrapped in a function so the minifier can shorten top-level names.
+(() => {
 
 const W = 800, H = 600;
 
@@ -136,14 +138,14 @@ const UPS = [
 ];
 // sky[top,horizon], grass, road, rumble, fog, rail, side objects, lamps every
 const TH = [
-  { sky: [0x05061a, 0x3a1f4a], gr: [0x23221f, 0x1d1c1a], rd: [0x2e2e34, 0x29292f], rm: [0x8a8a8a, 0x4a4a4a], fog: 0x120d1c, side: 'hhthk', ev: 7, lamp: 14 },
-  { sky: [0x06041a, 0x70264f], gr: [0x2a2a30, 0x242429], rd: [0x33333a, 0x2d2d33], rm: [0xe8c21a, 0x33333a], fog: 0x1f0d1c, side: 'bbbs', ev: 6, lamp: 11 },
-  { sky: [0x03051a, 0x53245a], gr: [0x1f2a22, 0x1a241d], rd: [0x303036, 0x2a2a30], rm: [0xdddddd, 0x33333a], fog: 0x170d20, side: 'btbt', ev: 7, lamp: 12, tw: 1 },
-  { sky: [0x02030f, 0x2a3a6a], gr: [0x20262c, 0x1b2026], rd: [0x2f2f35, 0x29292f], rm: [0xcc2222, 0xdddddd], fog: 0x0c0f1c, side: 'bbtb', ev: 7, lamp: 10 },
-  { sky: [0x01020c, 0x1a2a5a], gr: [0xc8d4e4, 0xb2c0d6], rd: [0x33343c, 0x2c2d35], rm: [0xcc2222, 0xeeeeee], fog: 0x0a1026, side: 'ppqp', ev: 8, lamp: 0 },
+  { sky: [0x05061a, 0x3a1f4a], gr: [0x23221f], rd: [0x2e2e34, 0x29292f], rm: [0x8a8a8a, 0x4a4a4a], fog: 0x120d1c, side: 'hhthk', lamp: 14 },
+  { sky: [0x06041a, 0x70264f], gr: [0x2a2a30], rd: [0x33333a, 0x2d2d33], rm: [0xe8c21a, 0x33333a], fog: 0x1f0d1c, side: 'bbbs', lamp: 11 },
+  { sky: [0x03051a, 0x53245a], gr: [0x1f2a22], rd: [0x303036, 0x2a2a30], rm: [0xdddddd, 0x33333a], fog: 0x170d20, side: 'btbt', lamp: 12, tw: 1 },
+  { sky: [0x02030f, 0x2a3a6a], gr: [0x20262c], rd: [0x2f2f35, 0x29292f], rm: [0xcc2222, 0xdddddd], fog: 0x0c0f1c, side: 'bbtb', lamp: 10 },
+  { sky: [0x01020c, 0x1a2a5a], gr: [0xc8d4e4], rd: [0x33343c, 0x2c2d35], rm: [0xcc2222, 0xeeeeee], fog: 0x0a1026, side: 'ppqp', lamp: 0 },
 ];
 const RT = [
-  { n: 'MAIPÚ', s: 'LAS POBLAS', th: 0, two: 1, seed: 7, pts: [0, 0, 0, 90, 30, 130, 90, 140, 130, 170, 130, 230, 90, 260, 20, 250, -20, 210, -70, 200, -110, 160, -110, 80, -70, 40, -60, -20, -30, -50, 0, -40], tr: 8, trT: [7, 6, 7, 4], hz: { y: 4, m: 3, d: 2 }, rv: { n: 'EL BRAYAN', q: '¿Con el auto de tu papi? JAJAJA.\nTe espero en la plaza, longi.', car: 1, col: 0xe6dfc4, vm: 26, al: 5 }, win: 1500 },
+  { n: 'MAIPÚ', s: 'LAS POBLAS', th: 0, two: 1, seed: 7, pts: [0, 0, 0, 90, 30, 130, 90, 140, 130, 170, 130, 230, 90, 260, 20, 250, -20, 210, -70, 200, -110, 160, -110, 80, -70, 40, -60, -20, -30, -50, 0, -40], tr: 8, trT: [7, 6, 7, 4], hz: { y: 4, m: 3, d: 2 }, rv: { n: 'EL BRAYAN', q: '¿Con el auto de tu papi? JAJAJA.\nTe espero en la plaza, longi.', car: 1, col: 0xe6dfc4, vm: 25, al: 4.7 }, win: 1500 },
   { n: 'SANTIAGO CENTRO', s: 'ALAMEDA Y CALLES CHICAS', th: 1, seed: 21, sc: 0.76, pts: [0, 0, 0, 160, 20, 200, 80, 200, 100, 180, 100, 120, 120, 100, 200, 100, 220, 120, 220, 220, 200, 240, 60, 260, 20, 300, -60, 300, -80, 280, -80, 200, -140, 180, -160, 140, -160, 20, -140, -20, -40, -40, -10, -30], tr: 14, trT: [4, 4, 6, 6, 7, 7], hz: { y: 5, P: 2 }, rv: { n: 'LA YESSENIA', q: 'En el centro mando yo, perrito.\nNo me vas a ver ni las luces.', car: 2, col: 0xff5fb0, vm: 28, al: 5.4 }, win: 2500 },
   { n: 'PROVIDENCIA', s: 'COSTANERA CENTER', th: 2, seed: 33, sc: 0.7, pts: [0, 0, 10, 120, 60, 200, 150, 230, 230, 200, 260, 120, 320, 80, 400, 110, 420, 200, 380, 280, 280, 320, 160, 330, 60, 380, -40, 360, -90, 280, -60, 200, -110, 120, -100, 20, -50, -40, -10, -50], tr: 16, trT: [4, 6, 6, 7, 7, 5], hz: { y: 4, g: 2, P: 2 }, rv: { n: 'EL TÍO LUCHO', q: 'Yo cruzo Provi en 4 minutos.\nCon pasajeros y dando vuelto.', car: 6, col: 0x151515, vm: 31, al: 6 }, win: 3500 },
   { n: 'LAS CONDES', s: 'EL GOLF Y APOQUINDO', th: 3, two: 1, seed: 48, sc: 0.7, pts: [0, 0, 0, 140, 40, 190, 110, 190, 150, 150, 150, 60, 190, 20, 260, 20, 300, 60, 300, 160, 340, 210, 340, 300, 290, 350, 200, 340, 150, 290, 90, 290, 40, 340, -40, 340, -90, 290, -90, 210, -140, 160, -140, 40, -100, -20, -30, -30], tr: 12, trT: [7, 7, 7, 6, 4], hz: { y: 4, P: 2, g: 2 }, rv: { n: 'EL MATI', q: 'Mi papá es dueño de esta comuna.\nLiteral. Córrete.', car: 7, col: 0xf2f2f2, vm: 35, al: 6.8 }, win: 5000 },
@@ -341,7 +343,9 @@ function mkTrack(ri) {
     }
     if (abs(k) > 0.024 && i % 2 === 0 && !r.lot) put(i, -sgn(k) * (hw + 2.6), { t: 'c', d: sgn(k) });
     if (r.lot && i % 4 === 0) put(i, -(hw + 0.6), { t: 'n' });
+    if (!r.lot && i % 30 === 15) put(i, ((i / 30 | 0) & 1 ? 1 : -1) * (hw + 6), { t: 'U', c: (i / 60 | 0) & 1 });
   }
+  if (!r.lot) for (let q = 0; q < 8; q++) put(25 + (rn() * (N - 50) | 0), (rn() - 0.5) * hw * 1.2, { t: 'B', p: rn() * 6, hz: 1 });
   const hz = r.hz || {};
   for (const t in hz) for (let q = 0; q < hz[t]; q++) {
     const i = 25 + (rn() * (N - 50) | 0);
@@ -509,9 +513,6 @@ function ob(o) {
     B(0, 0, 40, 330, 0x555555); B(0, 300, 520, 420, 0xf2c21a);
     const x = cx, y = by - 510 * cs, d = o.d;
     cg.fillStyle(0x111111, ca); cg.fillTriangle(x - d * 170 * cs, y - 150 * cs, x - d * 170 * cs, y + 150 * cs, x + d * 170 * cs, y);
-  } else if (t === 'a') {
-    B(0, 0, 330, 300, 0xeeeeee); B(0, 300, 400, 60, 0x4a6fd0); B(0, 360, 30, 190, 0xeeeeee); B(0, 460, 130, 30, 0xeeeeee);
-    B(-90, 0, 24, 60, 0xffd040); B(80, 0, 24, 60, 0xffd040); C(0, 60, 260, 0xffc050, 0.12);
   } else if (t === 'k') {
     B(0, 60, 620, 330, 0xe0e0e0); B(-230, 0, 90, 90, 0x111111); B(230, 0, 90, 90, 0x111111); B(0, 390, 30, 520, 0x777777);
     B(0, 880, 900, 110, 0xd82020); B(-300, 880, 150, 110, 0xffffff); B(300, 880, 150, 110, 0xffffff); C(0, 520, 330, 0xffc050, 0.14);
@@ -529,6 +530,25 @@ function ob(o) {
     const hop = abs(sin(now * 9)) * 30, d = Math.cos(now * 0.7 + o.p) > 0 ? 1 : -1;
     B(0, 60 + hop, 210, 100, 0x8a5a2a); B(d * 130, 130 + hop, 90, 90, 0x8a5a2a); B(d * 170, 120 + hop, 50, 36, 0x3a2412);
     B(-d * 110, 150 + hop, 30, 70, 0x8a5a2a); B(-70, hop, 28, 70, 0x6a4420); B(70, hop, 28, 70, 0x6a4420);
+  } else if (t === 'B') {
+    if (now - (o.g || -9) < 3) return;
+    const h = 120 + sin(now * 4 + o.p) * 40;
+    C(0, h + 90, 330, 0xffe14a, 0.18);
+    for (let i = -3; i < 4; i++) C(i * 55, h + 60 + i * i * 9, 50 - abs(i) * 5, i < 0 ? 0xffd400 : 0xffe84a);
+    B(-175, h + 130, 30, 50, 0x5a3a12);
+  } else if (t === 'U') {
+    const pl = o.c, y = 1300;
+    B(-560, 0, 70, y, 0x555560); B(560, 0, 70, y, 0x555560);
+    B(0, y, 2000, 900, 0xf4f4f4); B(0, y + 40, 1900, 820, pl ? 0x141414 : 0x2340e8);
+    C(0, y + 450, 1200, pl ? 0xffe600 : 0x6090ff, 0.1);
+    if (pl) for (let i = -4; i < 5; i++) C(i * 120, y + 330 + i * i * 16, 110 - abs(i) * 9, 0xffd400);
+    else {
+      const L = (x, a, b, w, h) => B(x + a, y + 230 + b, w, h, 0xffffff);
+      L(-430, 0, 0, 80, 520); L(-430, 110, 0, 220, 80); L(-430, 110, 240, 220, 80); L(-430, 190, 0, 80, 320);
+      L(0, -120, 0, 80, 320); L(0, 120, 0, 80, 320); L(0, 0, 0, 240, 80);
+      L(400, -110, 0, 80, 520); L(400, 0, 140, 90, 90); L(400, 80, 230, 90, 90); L(400, 80, 50, 90, 90); L(400, 150, 0, 80, 70); L(400, 150, 300, 80, 70);
+      C(-640, y + 270, 50, 0xffffff); C(640, y + 270, 50, 0xffffff);
+    }
   } else if (t === 'P') car(8, o.yw - CYAW, {});
   else if (t === 'n') { B(0, 0, 70, 14, 0x222222); B(0, 14, 46, 60, 0xff7a1a); B(0, 40, 34, 14, 0xffffff); }
 }
@@ -607,7 +627,7 @@ function view(P, g, VH) {
     const i = key & 1023, j = tk.ix(i + 1);
     if (j === i) continue;
     const f = Math.pow(clamp(((key >> 10) / 8 - 16) / 230, 0, 1), 1.3), alt = (i >> 1) & 1, fc_ = (c) => mix(c, th.fog, f);
-    if (!tk.lot) { strip(g, i, j, -hw - 4.6, hw + 4.6, fc_(th.sw || 0x34343a)); strip(g, i, j, -hw - 1, hw + 1, fc_(th.rm[alt])); }
+    if (!tk.lot) { strip(g, i, j, -hw - 4.6, hw + 4.6, fc_(0x34343a)); strip(g, i, j, -hw - 1, hw + 1, fc_(th.rm[alt])); }
     strip(g, i, j, -hw, hw, fc_(i === tk.fin ? 0xeeeeee : th.rd[alt]));
     const lc = fc_(0xe8e8e8);
     strip(g, i, j, -hw + 0.25, -hw + 0.42, lc); strip(g, i, j, hw - 0.42, hw - 0.25, lc);
@@ -672,12 +692,12 @@ function startRace(ri, mode) {
   const grid = (o, i, lat) => { o.x = tk.x[i] + tk.tz[i] * lat; o.z = tk.z[i] - tk.tx[i] * lat; o.y = tk.y[i]; o.yaw = o.cyaw = Math.atan2(tk.tx[i], tk.tz[i]); o.si = i; };
   if (vs) for (let i = 0; i < 2; i++) { const P = mkP(i, VS.c[i], [2, 2, 2, 1, 1, 1, 1], 0, VH); grid(P, 3, i ? 1.7 : -1.7); R.P.push(P); }
   else {
-    const dm = mode === 'demo', P = mkP(0, dm ? 3 : SV.car, dm ? [1, 1, 1, 1, 1, 1, 1] : SV.up, SV.bug, VH);
+    const dm = mode === 'demo', qk = mode === 'quick', P = mkP(0, dm ? 3 : qk ? [0, 1, 2, 3, 3][ri] : SV.car, dm ? [1, 1, 1, 1, 1, 1, 1] : qk ? [2, 2, 2, 1, 1, 1, 1] : SV.up, qk ? 0 : SV.bug, VH);
     grid(P, 3, mode === 'free' ? 0 : -1.7); R.P.push(P);
     if (dm) { P.demo = 1; P.s = 12; P.lat = 0; P.spd = 0; }
-    else if (mode === 'story') {
+    else if (mode === 'story' || mode === 'quick') {
       const rv = rt.rv;
-      R.rv = { ai: 1, s: 8 * tk.ds, lat: 1.7, sp: 0, ty: rv.car, w: 0.95, vmx: rv.vm, al: rv.al, col: rv.col, fin: 0, lapc: 0, prog: 0, fl: 0, o: { col: rv.col, neon: ri > 2 ? 0xff3060 : 0, wing: ri > 0, beam: 1 } };
+      R.rv = { ai: 1, s: 8 * tk.ds, lat: 1.7, sp: 0, ty: rv.car, w: 0.95, vmx: rv.vm * (mode === 'quick' ? 0.82 : 1), al: rv.al * (mode === 'quick' ? 0.85 : 1), col: rv.col, fin: 0, lapc: 0, prog: 0, fl: 0, o: { col: rv.col, neon: ri > 2 ? 0xff3060 : 0, wing: ri > 0, beam: 1 } };
       R.cars.push(R.rv);
     }
   }
@@ -763,7 +783,7 @@ function upP(P, dt) {
   if (P.cmbT > 0) { P.cmbT -= dt; if (P.cmbT <= 0 && !P.dr) P.cmb = 1; }
   P.bo = b2 && P.ni > 0 && !D ? 1 : 0;
   if (P.bo) { if (!P.wb) { nz(0.5, 0.25, 1200, 'bandpass'); tone(200, 0.5, 'sawtooth', 0.1, 900); } P.ni -= dt * 0.7; }
-  P.wb = P.bo;
+  P.wb = P.bo; if (P.bo) P.nu = 1;
   if (P.slp > 0.5 && U) { P.vx *= 1 + 0.06 * dt; P.vz *= 1 + 0.06 * dt; }
   if (hb) P.dk = 1; else if (abs(P.be) < 0.22) P.dk = max(0, P.dk - dt * 2.5);
   const surf = !tk.lot && abs(P.lat) > tk.hw + 1 ? 0.6 : 1;
@@ -823,7 +843,7 @@ function upP(P, dt) {
         if (P.vf < 0 || ab > 1.4) { P.cmb = 1; pop(P, '¡TROMPO!', '#ff4040'); }
         else if (lv) {
           P.ni = min(3, P.ni + P.ch * 0.5);
-          pop(P, ['', '¡WENA!', '¡LA MEDIA VOLÁ!', '¡¡CUMA DRIFT!!'][lv] + ' x' + P.cmb, ['', '#40c8ff', '#ff9020', '#ff40c0'][lv]);
+          pop(P, ['', '¡WENA!', '¡LA MEDIA VOLÁ!', '¡¡CHORO DRIFT!!'][lv] + ' x' + P.cmb, ['', '#40c8ff', '#ff9020', '#ff40c0'][lv]);
           tone(500 * lv, 0.25, 'square', 0.12, 1000 * lv); nz(0.4, 0.2, 1200, 'bandpass');
           P.cmb = min(9, P.cmb + 1); P.cmbT = 5;
         }
@@ -871,7 +891,9 @@ function upP(P, dt) {
     const hl = tk.hm[tk.ix(si0 + q)];
     if (hl) for (const o of hl) {
       const t = o.t, d2 = abs(o.lat - P.lat);
-      if (t === 'y' && d2 < 1.3) { P.vx *= 0.75; P.vz *= 0.75; P.shk = 0.35; P.bnc = 0.6; pop(P, '¡HOYO!', '#ff9020'); nz(0.2, 0.4, 300, 'lowpass'); }
+      if (t === 'B') {
+        if (d2 < 1.6 && now - (o.g || -9) > 3) { o.g = now; P.ni = min(3, P.ni + 1); P.pts += 200 * P.cmb; pop(P, '¡PLÁTANO! +PISCOLA', '#ffe600'); tone(988, 0.08, 'square', 0.12); tone(1319, 0.15, 'square', 0.1, 0, AC ? AC.currentTime + 0.07 : 0); }
+      } else if (t === 'y' && d2 < 1.3) { P.vx *= 0.75; P.vz *= 0.75; P.shk = 0.35; P.bnc = 0.6; pop(P, '¡HOYO!', '#ff9020'); nz(0.2, 0.4, 300, 'lowpass'); }
       else if (t === 'm') {
         P.bnc = 1;
         if (sp > 13) { P.vx *= 0.78; P.vz *= 0.78; P.shk = 0.4; pop(P, '¡LOMO DE TORO!', '#ff9020'); nz(0.25, 0.4, 250, 'lowpass'); }
@@ -907,7 +929,7 @@ function upCars(dt) {
       const i = Math.floor(c.s / tk.ds);
       let vt = c.vmx;
       for (let q = 0; q < 14; q++) vt = min(vt, Math.sqrt(c.al / (abs(tk.k[tk.ix(i + q)]) + 1e-4) + 13 * q * tk.ds));
-      vt *= 1 + clamp((P0.prog - c.prog) * tk.ds / 300, -0.07, 0.1);
+      vt *= 1 + clamp((P0.prog - c.prog) * tk.ds / 300, -0.12, 0.1);
       let tl = clamp(tk.k[tk.ix(i + 3)] * 60, -1, 1) * (tk.hw - 1.6);
       if (RT[R.ri].two) tl = max(tl, 0.9);
       for (const t of R.cars) {
@@ -974,7 +996,7 @@ function hud(P, oy, VH) {
     let c = 0;
     for (let q = 2; q < 15; q += 3) c = max(c, abs(tk.k[tk.ix(P.si + q)]));
     if (c > 0.024 && (now * 3 | 0) % 2) T('dh' + i, W / 2, oy + VH * 0.32, '¡BOTÓN 2 EN LA CURVA = DERRAPE!', vs ? 20 : 26, '#40e0ff');
-  }
+  } else if (R.go && R.mode !== 'free' && P.ni >= 1 && !P.nu && (now * 3 | 0) % 3) T('hn' + i, W / 2, oy + 54, 'BOTÓN 3: ¡PISCOLA! = NITRO', vs ? 14 : 18, '#40e0ff');
   if (P.ww > 1.2) T('ww' + i, W / 2, oy + VH * 0.4, '¡SENTIDO CONTRARIO!', 30, '#ff4040');
   if (P.pop) {
     const q = P.pop;
@@ -1019,7 +1041,7 @@ function race(dt) {
     } else if (R.t < 5 && cd <= 0) T('cd', W / 2, H / 2 - 40, '¡DALE!', 90, '#a0ff40');
   } else if (R.t < 6) T('cdh', W / 2, 120, 'PISTA LIBRE\nBOTÓN 1 ACELERA · ABAJO FRENA\nBOTÓN 2 FRENO DE MANO · BOTÓN 3 PISCOLA', 18, '#ffffff');
   if (hit.START1 || hit.START2) {
-    if (now - R.q < 1.2) { endRace(); go(vs || free ? 'title' : 'garage'); return; }
+    if (now - R.q < 1.2) { endRace(); go(vs || free || R.mode === 'quick' ? 'title' : 'garage'); return; }
     R.q = now;
   }
   if (now - R.q < 1.2) T('quit', W / 2, H - 60, 'START OTRA VEZ PARA SALIR', 16, '#ffffff');
@@ -1052,12 +1074,13 @@ function finish() {
     go(R.nm ? 'name' : 'vres');
     return;
   }
-  const P = R.P[0], win = P.fin && (!R.rv.fin || P.fin <= R.rv.fin), base = win ? RT[R.ri].win : 0, dr = (P.pts * facha() / 20) | 0;
+  const P = R.P[0], win = P.fin && (!R.rv.fin || P.fin <= R.rv.fin), base = win ? RT[R.ri].win : P.fin ? RT[R.ri].win * 0.4 | 0 : 0, dr = (P.pts * facha() / 20) | 0;
   const earn = max(0, base + dr - P.fine), t = P.fin ? P.fin - 4 : 0;
   let rec = 0;
-  if (win && (!SV.best[R.ri] || t < SV.best[R.ri])) { SV.best[R.ri] = t; rec = 1; }
-  R.res = { win, base, dr, fine: P.fine, earn, t, rec, first: win && SV.prog === R.ri };
-  SV.cash += earn;
+  const qk = R.mode === 'quick';
+  if (!qk && win && (!SV.best[R.ri] || t < SV.best[R.ri])) { SV.best[R.ri] = t; rec = 1; }
+  R.res = { win, base, dr, fine: P.fine, earn, t, rec, qk, first: !qk && win && SV.prog === R.ri };
+  if (!qk) SV.cash += earn;
   if (R.res.first) SV.prog++;
   if (R.res.first && R.ri === 4) SV.own[3] = 1;
   save();
@@ -1085,7 +1108,7 @@ function floor() {
   for (let i = -10; i < 11; i++) gu.lineBetween(W / 2 + i * 40, 380, W / 2 + i * 190, H);
   gu.fillStyle(0xff40c0, 0.08); gu.fillRect(0, 370, W, 12);
 }
-function showCar(x, y, sc, ty, a, o) { cg = gu; cx = x; by = y; cs = sc; ca = 1; vcam = 620; FV = 1500; car(ty, a, o); FV = F; }
+function showCar(x, y, sc, ty, a, o) { cg = gu; cx = x; by = y; cs = sc * 0.6; ca = 1; vcam = 620; FV = 1500; car(ty, a, o); FV = F; }
 const myTy = () => (SV.car === 0 && SV.bug ? 9 : SV.car);
 const myO = () => ({ neon: SV.car === 3 ? 0xb040ff : SV.up[3] ? 0x30ff90 : 0, wing: SV.up[4] || SV.car === 3, exh: SV.up[5] });
 
@@ -1093,19 +1116,20 @@ function title(dt) {
   race(dt);
   gu.fillStyle(0x000000, 0.35); gu.fillRect(0, 0, W, H);
   const b = 1 + sin(now * 16.2) * 0.02;
-  T('t1s', W / 2 + 6, 136, 'CUMA', 120, '#ff40c0').setScale(b);
-  T('t1', W / 2, 130, 'CUMA', 120, '#ffe600').setScale(b);
+  T('t1s', W / 2 + 6, 136, 'CHORO', 120, '#ff40c0').setScale(b);
+  T('t1', W / 2, 130, 'CHORO', 120, '#ffe600').setScale(b);
   T('t2s', W / 2 + 5, 235, 'DRIFT', 92, '#40e0ff').setScale(b).setAngle(-4);
   T('t2', W / 2, 230, 'DRIFT', 92, '#ffffff').setScale(b).setAngle(-4);
   T('t3', W / 2, 300, 'DE MAIPÚ AL CERRO', 20, '#ffe600');
   // the cabinet is shared: anyone can resume the saved story or start over
-  const ks = SV.on ? ['c', 'n', 'v', 'f'] : ['n', 'v', 'f'], nk = ks.length;
-  const it = ks.map((k) => ({ c: 'CONTINUAR HISTORIA', n: SV.on ? 'NUEVA HISTORIA' : 'MODO HISTORIA', v: 'VERSUS 2 JUGADORES', f: 'PISTA LIBRE' })[k]);
+  const ks = SV.on ? ['q', 'c', 'n', 'v', 'f'] : ['q', 'n', 'v', 'f'], nk = ks.length;
+  const it = ks.map((k) => ({ q: 'CARRERA RÁPIDA', c: 'CONTINUAR HISTORIA', n: SV.on ? 'NUEVA HISTORIA' : 'MODO HISTORIA', v: 'VERSUS 2 JUGADORES', f: 'PISTA LIBRE' })[k]);
   sel = min(sel, nk - 1);
   if (tap(1, 'U') || tap(2, 'U')) { sel = (sel + nk - 1) % nk; sSel(); }
   if (tap(1, 'D') || tap(2, 'D')) { sel = (sel + 1) % nk; sSel(); }
-  it.forEach((s, i) => T('m' + i, W / 2, 380 - (nk - 3) * 30 + i * 40, (sel === i ? '▶ ' : '') + s, sel === i ? 30 : 24, sel === i ? '#ffe600' : '#ffffff'));
-  if ((now * 2 | 0) % 2) T('ps', W / 2, 520, 'APRETA UN BOTÓN', 18, '#a0ff40');
+  it.forEach((s, i) => T('m' + i, W / 2, 345 + i * (nk > 4 ? 34 : 42), (sel === i ? '▶ ' : '') + s, sel === i ? 30 : 24, sel === i ? '#ffe600' : '#ffffff'));
+  if ((now * 2 | 0) % 2) T('ps', W / 2, 522, 'APRETA UN BOTÓN', 18, '#a0ff40');
+  T('ph', W / 2, 22, 'PLATANUS HACK 26 · SANTIAGO', 12, '#ffe600');
   T('cr', W / 2, 575, 'BOTÓN 1 ACELERA · ABAJO FRENA · BOTÓN 2 FRENO DE MANO · BOTÓN 3 PISCOLA', 12, '#ffffff');
   const rk = [0, 1, 2, 3, 4].filter((i) => REC.t[i]);
   if (rk.length) { const i = rk[(now / 3 | 0) % rk.length]; T('rc', W / 2, 548, 'RÉCORD ' + RT[i].n + ': ' + REC.n[i] + '  ' + tm(REC.t[i]), 16, '#40e0ff'); }
@@ -1113,7 +1137,8 @@ function title(dt) {
   if (okHit(1) || okHit(2)) {
     const k = ks[sel];
     sOk(); endRace();
-    if (k === 'f') startRace(5, 'free');
+    if (k === 'q') startRace(rnd() * 5 | 0, 'quick');
+    else if (k === 'f') startRace(5, 'free');
     else if (k === 'v') go('vsel');
     else if (k === 'c') go('garage');
     else { const b = SV.best; SV = fresh(); SV.best = b; save(); go('intro'); }
@@ -1127,6 +1152,7 @@ const INTRO = [
 ];
 function intro() {
   gu.fillStyle(0x000000, 1); gu.fillRect(0, 0, W, H);
+  if (hit.START1 && page < 3) { page = 3; st = 0; }
   if (page < 3) {
     const p = INTRO[page], s = p[1].slice(0, st * 30 | 0);
     T('i0', W / 2, 200, p[0], 40, '#ffe600');
@@ -1160,7 +1186,7 @@ function garage() {
   sel = min(sel, items.length - 1);
   const it = items[sel], mr = min(SV.prog, 4);
   if (it.k === 'go' && (tap(1, 'L') || tap(1, 'R'))) { rsel = (rsel + (tap(1, 'L') ? mr : 1)) % (mr + 1); sSel(); }
-  T('gt', 24, 14, 'TALLER DON CUMA', 30, '#ffe600', 0, 0);
+  T('gt', 24, 14, 'TALLER DON CHORO', 30, '#ffe600', 0, 0);
   T('gc', W - 24, 14, fmt(SV.cash), 30, '#a0ff40', 1, 0);
   showCar(210, 350, 0.62, myTy(), now * 0.8, myO());
   T('gn', 210, 110, SV.car === 0 && SV.bug ? "ESCARABAJO '74" : CARS[SV.car].n, 24, '#ffffff');
@@ -1223,14 +1249,14 @@ function result() {
     }
   });
   if (r.first && R.ri < 4) T('r2', W / 2, 490, '¡RUTA NUEVA: ' + RT[R.ri + 1].n + '!', 26, '#40e0ff');
-  if (st > 2 && (now * 2 | 0) % 2) T('r3', W / 2, 550, 'BOTÓN: AL TALLER', 18, '#a0ff40');
-  if (st > 1.2 && okHit(1)) { sOk(); go(r.first && R.ri === 4 ? 'end' : 'garage'); }
+  if (st > 2 && (now * 2 | 0) % 2) T('r3', W / 2, 550, r.qk ? 'BOTÓN: MENÚ' : 'BOTÓN: AL TALLER', 18, '#a0ff40');
+  if (st > 1.2 && okHit(1)) { sOk(); go(r.qk ? 'title' : r.first && R.ri === 4 ? 'end' : 'garage'); }
 }
 
 const ENDT = [
   ['EL REY DEL CERRO', 'te tira las llaves del BMV.\n«Cuídalo. Está zorreado entero.»'],
   ['MAIPÚ. 06:12.', 'Tu papá en la puerta, en pantuflas.\n«¿Y mi auto?... ¿Le pusiste NEÓN?»'],
-  ['CUMA DRIFT', 'Ahora el cerro es tuyo.\nEl BMV 320 ZORRÓN te espera en el taller.'],
+  ['CHORO DRIFT', 'Ahora el cerro es tuyo.\nEl BMV 320 ZORRÓN te espera en el taller.'],
 ];
 function ending() {
   gu.fillStyle(0x000000, 1); gu.fillRect(0, 0, W, H);
@@ -1308,6 +1334,7 @@ function create() {
   for (let y = 0; y < H; y += 3) sc.fillRect(0, y, W, 1);
   cam0.ignore([g1, gu, sc]); cam1.ignore([g0, gu, sc]); camU.ignore([g0, g1]);
   cam1.setVisible(false);
+  for (const c of [cam0, cam1]) try { c.postFX.addBloom(0xffffff, 1, 1, 0.6, 0.55, 2); c.postFX.addVignette(0.5, 0.5, 0.9, 0.25); c.postFX.addColorMatrix().saturate(0.25, true); } catch (e) { /* canvas */ }
   const rn = rng(5);
   for (let i = 0; i < 70; i++) STARS.push({ x: rn() * W, y: rn(), p: rn() * 6 });
   let h = 0.5;
@@ -1352,3 +1379,4 @@ new Phaser.Game({
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
   scene: { create, update },
 });
+})();
