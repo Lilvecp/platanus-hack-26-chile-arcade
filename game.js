@@ -65,6 +65,9 @@ function store() {
 const SK = 'cumadrift-1';
 const fresh = () => ({ car: 0, own: [1, 0, 0, 0], up: [0, 0, 0, 0, 0, 0, 0], cash: 0, prog: 0, best: [0, 0, 0, 0, 0], bug: 0, on: 0 });
 let SV = fresh();
+// cabinet-wide record per route with initials, kept apart from the story save
+const RK = 'cumadrift-rec', ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+let REC = { t: [0, 0, 0, 0, 0], n: ['', '', '', '', ''] };
 function save() { try { store().set(SK, SV).catch(() => {}); } catch (e) { /* ignore */ } }
 function load() {
   try {
@@ -76,6 +79,10 @@ function load() {
         SV.car = Math.max(0, Math.min(3, SV.car | 0));
         SV.prog = Math.max(0, Math.min(5, SV.prog | 0));
       }
+    }).catch(() => {});
+    store().get(RK).then((r) => {
+      const v = r && r.found && r.value, ok = (a, ty) => Array.isArray(a) && a.length === 5 && a.every((x) => typeof x === ty);
+      if (v && ok(v.t, 'number') && ok(v.n, 'string')) REC = v;
     }).catch(() => {});
   } catch (e) { /* ignore */ }
 }
@@ -792,6 +799,7 @@ function upP(P, dt) {
     const edge = !tk.lot && abs(P.lat) > tk.hw - 1.3, gain = min(ab, 1.1) * sp / 22 * dt * P.tb * (edge ? 1.6 : 1) * 1.6, l0 = P.ch | 0;
     P.dr = 1; P.dT = 0.4;
     P.ch = min(3, P.ch + gain); P.pts += gain * 100 * P.cmb;
+    if (P.ch >= 1) P.ld = 1;
     if ((P.ch | 0) > l0) tone(400 + 250 * (P.ch | 0), 0.1, 'square', 0.1);
     if (edge && !P.edg) pop(P, '¡AL FILO!', '#40e0ff');
     P.edg = edge;
@@ -962,6 +970,11 @@ function hud(P, oy, VH) {
     if (oth) { const gap = (P.prog - oth.prog) * tk.ds | 0; T('gp' + i, W / 2, oy + 20, (gap >= 0 ? '1° +' : '2° ') + gap + ' m', 18, gap >= 0 ? '#a0ff40' : '#ff6060'); }
     T('cv' + i, W - 16, oy + 12, (tk.loop ? 'VUELTA ' + min(R.laps, P.lap + 1) + '/' + R.laps : 'CURVA ' + min(40, 25 + (P.si / tk.N * 16 | 0)) + '/40') + '  ' + tm(max(0, R.t - 4)), 16, '#ffffff', 1, 0);
   } else T('cv' + i, W - 16, oy + 12, ['TRACCIÓN DELANTERA', 'TRACCIÓN TRASERA', '4X4'][P.c.dr] + ' · START x2 SALIR', 14, '#ffffff', 1, 0);
+  if (!P.ld && R.go && !P.fin && P.sp > 8) {
+    let c = 0;
+    for (let q = 2; q < 15; q += 3) c = max(c, abs(tk.k[tk.ix(P.si + q)]));
+    if (c > 0.024 && (now * 3 | 0) % 2) T('dh' + i, W / 2, oy + VH * 0.32, '¡BOTÓN 2 EN LA CURVA = DERRAPE!', vs ? 20 : 26, '#40e0ff');
+  }
   if (P.ww > 1.2) T('ww' + i, W / 2, oy + VH * 0.4, '¡SENTIDO CONTRARIO!', 30, '#ff4040');
   if (P.pop) {
     const q = P.pop;
@@ -1029,10 +1042,14 @@ function endRace() {
 const facha = () => 1 + 0.25 * (SV.up[3] + SV.up[4] + SV.up[5] + SV.up[6]) + 0.1 * SV.car;
 function finish() {
   endRace();
+  // fastest finisher beats the cabinet record? ask for initials first
+  let bi = -1, bt = 0;
+  R.P.forEach((q, i) => { const t = q.fin ? q.fin - 4 : 0; if (t && (bi < 0 || t < bt)) { bi = i; bt = t; } });
+  R.nm = bi >= 0 && (!REC.t[R.ri] || bt < REC.t[R.ri]) ? { p: bi, t: bt, l: [0, 0, 0], c: 0 } : null;
   if (R.mode === 'vs') {
     const a = R.P[0].fin || 1e9, b = R.P[1].fin || 1e9;
     R.res = { w: a <= b ? 0 : 1 };
-    go('vres');
+    go(R.nm ? 'name' : 'vres');
     return;
   }
   const P = R.P[0], win = P.fin && (!R.rv.fin || P.fin <= R.rv.fin), base = win ? RT[R.ri].win : 0, dr = (P.pts * facha() / 20) | 0;
@@ -1044,7 +1061,7 @@ function finish() {
   if (R.res.first) SV.prog++;
   if (R.res.first && R.ri === 4) SV.own[3] = 1;
   save();
-  go('result');
+  go(R.nm ? 'name' : 'result');
   if (win) [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.25, 'square', 0.12, 0, AC ? AC.currentTime + i * 0.11 : 0));
   else sNo();
 }
@@ -1090,6 +1107,8 @@ function title(dt) {
   it.forEach((s, i) => T('m' + i, W / 2, 380 - (nk - 3) * 30 + i * 40, (sel === i ? '▶ ' : '') + s, sel === i ? 30 : 24, sel === i ? '#ffe600' : '#ffffff'));
   if ((now * 2 | 0) % 2) T('ps', W / 2, 520, 'APRETA UN BOTÓN', 18, '#a0ff40');
   T('cr', W / 2, 575, 'BOTÓN 1 ACELERA · ABAJO FRENA · BOTÓN 2 FRENO DE MANO · BOTÓN 3 PISCOLA', 12, '#ffffff');
+  const rk = [0, 1, 2, 3, 4].filter((i) => REC.t[i]);
+  if (rk.length) { const i = rk[(now / 3 | 0) % rk.length]; T('rc', W / 2, 548, 'RÉCORD ' + RT[i].n + ': ' + REC.n[i] + '  ' + tm(REC.t[i]), 16, '#40e0ff'); }
   if (hit.START2 && !okHit(1)) sel = ks.indexOf('v');
   if (okHit(1) || okHit(2)) {
     const k = ks[sel];
@@ -1222,6 +1241,28 @@ function ending() {
   if (okHit(1) && st > 0.5) { sSel(); if (++page > 2) go('garage'); else st = 0; }
 }
 
+function nme() {
+  const m = R.nm, p = m.p + 1;
+  floor();
+  T('n0', W / 2, 80, '¡RÉCORD DE LA MÁQUINA!', 44, '#ffe600');
+  T('n1', W / 2, 140, RT[R.ri].n + ' · ' + tm(m.t) + (R.mode === 'vs' ? ' · JUGADOR ' + p : ''), 22, '#40e0ff');
+  if (tap(p, 'U')) { m.l[m.c] = (m.l[m.c] + 25) % 26; sSel(); }
+  if (tap(p, 'D')) { m.l[m.c] = (m.l[m.c] + 1) % 26; sSel(); }
+  if (tap(p, 'L') && m.c) { m.c--; sSel(); }
+  if (tap(p, 'R') && m.c < 2) { m.c++; sSel(); }
+  for (let i = 0; i < 3; i++) T('nl' + i, W / 2 + (i - 1) * 100, 290, ABC[m.l[i]], 90, i !== m.c ? '#ffffff' : (now * 4 | 0) % 2 ? '#ff40c0' : '#ffe600');
+  T('n2', W / 2, 430, '▲▼ LETRA · BOTÓN: SIGUIENTE', 20, '#ffffff');
+  if (st > 0.4 && okHit(p)) {
+    sOk();
+    if (m.c < 2 && !hit['START' + p]) m.c++;
+    else {
+      REC.t[R.ri] = m.t; REC.n[R.ri] = m.l.map((x) => ABC[x]).join('');
+      try { store().set(RK, REC).catch(() => {}); } catch (e) { /* ignore */ }
+      go(R.mode === 'vs' ? 'vres' : 'result');
+    }
+  }
+}
+
 function vsel() {
   floor();
   T('v0', W / 2, 40, 'VERSUS', 54, '#ffe600');
@@ -1295,7 +1336,9 @@ function update(_, delta) {
   else if (S === 'end') ending();
   else if (S === 'vsel') vsel();
   else if (S === 'vres') vres();
-  if (S !== 'title' && S !== 'race' && idle > 90) go('title');
+  else if (S === 'name') nme();
+  for (const k in held) if (held[k]) idle = 0;
+  if (S !== 'title' && idle > (S === 'race' ? 45 : 90)) { endRace(); go('title'); }
   for (const k in TX) { TX[k].setVisible(!!TU[k]); TU[k] = 0; }
   hit = Object.create(null);
 }
