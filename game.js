@@ -40,8 +40,9 @@ window.addEventListener('keyup', (e) => {
 });
 
 const pk = (p, k) => held['P' + p + '_' + k];
-const btn = (p, a) => (a ? pk(p, 2) || pk(p, 5) : pk(p, 1) || pk(p, 4));
-const gas = (p) => pk(p, 'U') || pk(p, 3);
+// B1 accelerate, B2 handbrake, B3 piscola. Bottom row mirrors the top row.
+const btn = (p, a) => (a ? pk(p, 3) || pk(p, 6) : pk(p, 2) || pk(p, 5));
+const gas = (p) => pk(p, 'U') || pk(p, 1) || pk(p, 4);
 const tap = (p, k) => hit['P' + p + '_' + k];
 function okHit(p) {
   for (let i = 1; i < 7; i++) if (hit['P' + p + '_' + i]) return 1;
@@ -650,7 +651,7 @@ function mkP(i, ci, up, bug, VH) {
     tb: 1 + 0.2 * up[2], hy: VH * (v ? 0.4 : 0.36), camH: v ? 2.5 : 2.1, camD: v ? 6.4 : 7.4,
     x: 0, z: 0, y: 0, yaw: 0, vx: 0, vz: 0, w: 0, de: 0, vf: 0, vl: 0, sp: 0, be: 0, cyaw: 0, si: 0, lap: 0, prog: 0, lat: 0, s: 0, fl: 0,
     dr: 0, dT: 0, ch: 0, ni: 1, bo: 0, pts: 0, cmb: 1, cmbT: 0, inv: 0, cop: 0, sir: 0, fine: 0, fin: 0, bgx: 0, bnc: 0, shk: 0, pop: null,
-    ov: 0, slp: 0, dk: 0, zm: 1.04, pre: 0, st0: 0, ww: 0, rw: null, edg: 0, wb: 0, gu: 0,
+    ov: 0, stk: 0, slp: 0, dk: 0, zm: 1.04, pre: 0, st0: 0, ww: 0, rw: null, edg: 0, wb: 0, gu: 0,
     o: { neon: ci === 3 ? 0xb040ff : up[3] ? 0x30ff90 : 0, wing: up[4] || ci === 3, exh: up[5], boost: 0, brake: 0, beam: 1 },
   };
 }
@@ -884,7 +885,9 @@ function upP(P, dt) {
   }
   // wrong way and respawn
   P.ww = P.vx * tk.tx[P.si] + P.vz * tk.tz[P.si] < -3 && !tk.lot ? P.ww + dt : 0;
-  if (tap(p, 6) && !P.fin) { const i = P.si; P.x = tk.x[i]; P.z = tk.z[i]; P.yaw = P.cyaw = Math.atan2(tk.tx[i], tk.tz[i]); P.vx = P.vz = P.w = 0; P.cmb = 1; P.ch = 0; }
+  // stuck or wrong way for too long: put the car back on the road automatically
+  P.stk = R.go && !P.fin && sp < 3 ? P.stk + dt : 0;
+  if (!P.fin && (P.stk > 3 || P.ww > 3)) { P.stk = P.ww = 0; pop(P, '¡DE VUELTA A LA PISTA!', '#40e0ff'); const i = P.si; P.x = tk.x[i]; P.z = tk.z[i]; P.yaw = P.cyaw = Math.atan2(tk.tx[i], tk.tz[i]); P.vx = P.vz = P.w = 0; P.cmb = 1; P.ch = 0; P.inv = 1; }
   if (!P.fin && R.mode !== 'free' && (tk.loop ? P.lap >= R.laps : P.si >= tk.N - 10)) { P.fin = R.t; sOk(); }
 }
 
@@ -1001,7 +1004,7 @@ function race(dt) {
       T('cdh', W / 2, H / 2 + 60, 'ACELERA JUSTO EN EL ¡DALE! = PIQUE PERFECTO', 14, '#ffffff');
       T('cd', W / 2, H / 2 - 40, cd + '', 110, '#ffe600').setScale(1 + (R.t % 1) * 0.4).setAlpha(1 - (R.t % 1) * 0.6);
     } else if (R.t < 5 && cd <= 0) T('cd', W / 2, H / 2 - 40, '¡DALE!', 90, '#a0ff40');
-  } else if (R.t < 6) T('cdh', W / 2, 120, 'PISTA LIBRE\n↑ ACELERA · ↓ FRENA · BOTÓN 1 FRENO DE MANO\nBOTÓN 2 PISCOLA · BOTÓN 6 VOLVER A LA PISTA', 18, '#ffffff');
+  } else if (R.t < 6) T('cdh', W / 2, 120, 'PISTA LIBRE\nBOTÓN 1 ACELERA · ABAJO FRENA\nBOTÓN 2 FRENO DE MANO · BOTÓN 3 PISCOLA', 18, '#ffffff');
   if (hit.START1 || hit.START2) {
     if (now - R.q < 1.2) { endRace(); go(vs || free ? 'title' : 'garage'); return; }
     R.q = now;
@@ -1078,18 +1081,23 @@ function title(dt) {
   T('t2s', W / 2 + 5, 235, 'DRIFT', 92, '#40e0ff').setScale(b).setAngle(-4);
   T('t2', W / 2, 230, 'DRIFT', 92, '#ffffff').setScale(b).setAngle(-4);
   T('t3', W / 2, 300, 'DE MAIPÚ AL CERRO', 20, '#ffe600');
-  const it = [SV.on ? 'CONTINUAR HISTORIA' : 'MODO HISTORIA', 'VERSUS 2 JUGADORES', 'PISTA LIBRE'];
-  if (tap(1, 'U') || tap(2, 'U')) { sel = (sel + 2) % 3; sSel(); }
-  if (tap(1, 'D') || tap(2, 'D')) { sel = (sel + 1) % 3; sSel(); }
-  it.forEach((s, i) => T('m' + i, W / 2, 380 + i * 44, (sel === i ? '▶ ' : '') + s, sel === i ? 30 : 24, sel === i ? '#ffe600' : '#ffffff'));
+  // the cabinet is shared: anyone can resume the saved story or start over
+  const ks = SV.on ? ['c', 'n', 'v', 'f'] : ['n', 'v', 'f'], nk = ks.length;
+  const it = ks.map((k) => ({ c: 'CONTINUAR HISTORIA', n: SV.on ? 'NUEVA HISTORIA' : 'MODO HISTORIA', v: 'VERSUS 2 JUGADORES', f: 'PISTA LIBRE' })[k]);
+  sel = min(sel, nk - 1);
+  if (tap(1, 'U') || tap(2, 'U')) { sel = (sel + nk - 1) % nk; sSel(); }
+  if (tap(1, 'D') || tap(2, 'D')) { sel = (sel + 1) % nk; sSel(); }
+  it.forEach((s, i) => T('m' + i, W / 2, 380 - (nk - 3) * 30 + i * 40, (sel === i ? '▶ ' : '') + s, sel === i ? 30 : 24, sel === i ? '#ffe600' : '#ffffff'));
   if ((now * 2 | 0) % 2) T('ps', W / 2, 520, 'APRETA UN BOTÓN', 18, '#a0ff40');
-  T('cr', W / 2, 575, 'JOYSTICK ↑ ACELERA ↓ FRENA · BOTÓN 1 FRENO DE MANO · BOTÓN 2 PISCOLA', 12, '#ffffff');
-  if (hit.START2 && !okHit(1)) sel = 1;
+  T('cr', W / 2, 575, 'BOTÓN 1 ACELERA · ABAJO FRENA · BOTÓN 2 FRENO DE MANO · BOTÓN 3 PISCOLA', 12, '#ffffff');
+  if (hit.START2 && !okHit(1)) sel = ks.indexOf('v');
   if (okHit(1) || okHit(2)) {
+    const k = ks[sel];
     sOk(); endRace();
-    if (sel === 2) startRace(5, 'free');
-    else if (sel) go('vsel');
-    else go(SV.on ? 'garage' : 'intro');
+    if (k === 'f') startRace(5, 'free');
+    else if (k === 'v') go('vsel');
+    else if (k === 'c') go('garage');
+    else { const b = SV.best; SV = fresh(); SV.best = b; save(); go('intro'); }
   }
 }
 
